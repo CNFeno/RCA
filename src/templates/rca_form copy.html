@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% block title %}{% if rca %}Edit{% else %}Create{% endif %} RCA - RCA Application{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">{% if rca %}Edit{% else %}Create{% endif %} RCA Document</h2>
+    <form method="POST" class="needs-validation" novalidate>
+        <div class="row mb-3">
+            <div class="col">
+                <label for="incident_number" class="form-label">Incident Number</label>
+                <input type="number" class="form-control" id="incident_number" name="incident_number" value="{{ rca.incident_number if rca else '' }}" required>
+            </div>
+            <div class="col">
+                <label for="customer_name" class="form-label">Customer Name</label>
+                <input type="text" class="form-control" id="customer_name" name="customer_name" value="{{ rca.customer_name if rca else '' }}">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col">
+                <label for="product_name" class="form-label">Product Name</label>
+                <input type="text" class="form-control" id="product_name" name="product_name" value="{{ rca.product_name if rca else '' }}">
+            </div>
+            <div class="col">
+                <label for="product_version" class="form-label">Product Version</label>
+                <input type="text" class="form-control" id="product_version" name="product_version" value="{{ rca.product_version if rca else '' }}">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col">
+                <label for="incident_date" class="form-label">Incident Date</label>
+                <input type="date" class="form-control" id="incident_date" name="incident_date" value="{{ rca.incident_date if rca else '' }}">
+            </div>
+            <div class="col">
+                <label for="incident_time" class="form-label">Incident Time</label>
+                <input type="time" class="form-control" id="incident_time" name="incident_time" value="{{ rca.incident_time if rca else '' }}">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col">
+                <label for="reported_date" class="form-label">Reported Date</label>
+                <input type="date" class="form-control" id="reported_date" name="reported_date" value="{{ rca.reported_date if rca else '' }}">
+            </div>
+            <div class="col">
+                <label for="restored_date" class="form-label">Restored Date</label>
+                <input type="date" class="form-control" id="restored_date" name="restored_date" value="{{ rca.restored_date if rca else '' }}">
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="rca_report_status" class="form-label">RCA Report Status</label>
+            <select class="form-select" id="rca_report_status" name="rca_report_status">
+                <option value="PRELIMINARY" {% if rca and rca.rca_report_status == 'PRELIMINARY' %}selected{% endif %}>Preliminary</option>
+                <option value="FINAL" {% if rca and rca.rca_report_status == 'FINAL' %}selected{% endif %}>Final</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="problem_category" class="form-label">Problem Category</label>
+            <input type="text" class="form-control" id="problem_category" name="problem_category" placeholder="Please enter the subject of the incident" value="{{ rca.problem_category if rca else '' }}">
+        </div>
+
+        <div class="mb-3">
+            <label for="problem_sub_category" class="form-label">Problem Sub-Category</label>
+            <input type="text" class="form-control" id="problem_sub_category" name="problem_sub_category" placeholder="Please enter other impact if any" value="{{ rca.problem_sub_category if rca else '' }}">
+        </div>
+
+        <div class="mb-3">
+            <label for="service_impact" class="form-label">Service Impact</label>
+            <select class="form-select" id="service_impact" name="service_impact">
+                <option value="FULL" {% if rca and rca.service_impact == 'FULL' %}selected{% endif %}>Full</option>
+                <option value="PARTIAL" {% if rca and rca.service_impact == 'PARTIAL' %}selected{% endif %}>Partial</option>
+            </select>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col">
+                <label for="service_impact_duration_value" class="form-label">Service Impact Duration Value</label>
+                <input type="number" class="form-control" id="service_impact_duration_value" name="service_impact_duration_value" value="{{ rca.service_impact_duration.split(' ')[0] if rca and rca.service_impact_duration else '' }}">
+            </div>
+            <div class="col">
+                <label for="service_impact_duration_unit" class="form-label">Unit</label>
+                <select class="form-control" id="service_impact_duration_unit" name="service_impact_duration_unit">
+                    <option value="sec" {% if rca and rca.service_impact_duration.endswith('sec') %}selected{% endif %}>Seconds</option>
+                    <option value="min" {% if rca and rca.service_impact_duration.endswith('min') %}selected{% endif %}>Minutes</option>
+                    <option value="hour" {% if rca and rca.service_impact_duration.endswith('hour') %}selected{% endif %}>Hours</option>
+                    <option value="day" {% if rca and rca.service_impact_duration.endswith('day') %}selected{% endif %}>Days</option>
+                </select>
+            </div>
+        </div>
+        
+        
+
+        <div class="mb-3">
+            <label for="incident_impact" class="form-label">Incident Impact</label>
+            <textarea class="form-control" id="incident_impact" name="incident_impact">{{ rca.incident_impact if rca else '' }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="current_status" class="form-label">Current Status</label>
+            <select class="form-control" id="current_status" name="current_status">
+                <option value="In Progress" {{ 'selected' if rca and rca.current_status == 'In Progress' else '' }}>In Progress</option>
+                <option value="Resolved" {{ 'selected' if rca and rca.current_status == 'Resolved' else '' }}>Resolved</option>
+            </select>
+        </div>        
+
+        <div class="mb-3">
+            <label for="problem_statement" class="form-label">Problem Statement</label>
+            <textarea class="form-control" id="problem_statement" name="problem_statement">{{ rca.problem_statement if rca else '' }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="way_forward" class="form-label">Way Forward</label>
+            <textarea class="form-control" id="way_forward" name="way_forward">{{ rca.way_forward if rca else '' }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="incident_severity_id" class="form-label">Incident Severity</label>
+            <select class="form-select" id="incident_severity_id" name="incident_severity_id" required>
+                <option value="" disabled {% if not rca %}selected{% endif %}>Select Severity</option>
+                {% for severity in severities %}
+                    <option value="{{ severity.id }}" {% if rca and rca.incident_severity_id == severity.id %}selected{% endif %}>
+                        {{ severity.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary w-100">{% if rca %}Update{% else %}Create{% endif %} RCA</button>
+        </div>
+    </form>
+
+    <!-- Exemple avec un accordéon Bootstrap -->
+    <hr>
+    <h4>Root Causes</h4>
+
+     <div class="accordion" id="rootCausesAccordion">
+         {% if rca and rca.root_causes %}
+             {% for root_cause in rca.root_causes %}
+                 <div class="card">
+                     <div class="card-header" id="heading{{ loop.index }}">
+                         <h2 class="mb-0">
+                             <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse{{ loop.index }}" aria-expanded="false" aria-controls="collapse{{ loop.index }}">
+                                 Root Cause {{ loop.index }}
+                             </button>
+                         </h2>
+                     </div>
+                     <div id="collapse{{ loop.index }}" class="collapse" aria-labelledby="heading{{ loop.index }}" data-parent="#rootCausesAccordion">
+                         <div class="card-body">
+                             <p>{{ root_cause.description }}</p>
+                             <form method="POST" action="{{ url_for('rca.delete_root_cause', root_cause_id=root_cause.id) }}" onsubmit="return confirm('Are you sure you want to delete this root cause?');">
+                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                             </form>
+                         </div>
+                     </div>
+                 </div>
+             {% endfor %}
+         {% else %}
+             <p>No root causes added yet.</p>
+         {% endif %}
+     </div>
+    <h5 class="mt-4">Add a New Root Cause</h5>
+    <form method="POST" action="{{ url_for('rca.add_root_cause', rca_id=rca.id) }}">
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description" required></textarea>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Add Root Cause</button>
+        </div>
+    </form>
+        
+</div>
+{% endblock %}

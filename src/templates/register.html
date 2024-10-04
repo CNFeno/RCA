@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'View User' if view_only else 'Edit User' if user else 'Register' }} - RCA Application{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">{{ 'View User' if view_only else 'Edit User' if user else 'Register' }}</h2>
+    <form method="POST" class="needs-validation" novalidate id="userForm">
+        <div class="mb-3">
+            <label for="username" class="form-label">Username:</label>
+            <input type="text" class="form-control" id="username" name="username" value="{{ user.username if user else '' }}" {{ 'readonly' if view_only }} required>
+            <div class="invalid-feedback">
+                Please provide a username.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email:</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ user.email if user else '' }}" {{ 'readonly' if view_only }} required>
+            <div class="invalid-feedback">
+                Please provide a valid email.
+            </div>
+        </div>
+        {% if not view_only %}
+        <div class="mb-3">
+            <label for="password" class="form-label">Password:</label>
+            <input type="password" class="form-control" id="password" name="password" {{ 'required' if not user }}>
+            <div class="invalid-feedback">
+                Please provide a password.
+            </div>
+        </div>
+        {% endif %}
+        <div class="mb-3">
+            <label for="role" class="form-label">Role:</label>
+            <select class="form-select" id="role" name="role" {{ 'disabled' if view_only }} required>
+                <option value="ADMIN" {{ 'selected' if user and user.role == 'ADMIN' else '' }}>Administrator</option>
+                <option value="ANALYST" {{ 'selected' if user and user.role == 'ANALYST' else '' }}>Analyst</option>
+                <option value="VIEWER" {{ 'selected' if user and user.role == 'VIEWER' else '' }}>Viewer</option>
+            </select>
+            <div class="invalid-feedback">
+                Please select a role.
+            </div>
+        </div>
+        {% if not view_only %}
+        <button type="submit" class="btn btn-primary w-100" id="submitButton" disabled>{{ 'Update' if user else 'Register' }}</button>
+        {% endif %}
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const form = document.getElementById('userForm');
+        const submitButton = document.getElementById('submitButton');
+        const inputs = form.querySelectorAll('input[required], select[required]');
+
+        function checkFormValidity() {
+            let formIsValid = true;
+            inputs.forEach(input => {
+                if (!input.value) {
+                    formIsValid = false;
+                }
+            });
+            submitButton.disabled = !formIsValid;
+        }
+
+        inputs.forEach(input => {
+            input.addEventListener('input', checkFormValidity);
+        });
+
+        checkFormValidity(); // Initial check when the page loads
+    });
+</script>
+{% endblock %}
