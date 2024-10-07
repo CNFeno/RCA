@@ -1,5 +1,6 @@
 # src/routes/blueprint.py
 from flask import Blueprint, render_template, request
+from controllers.dashboard import Dashboard
 from controllers.user_manage import UserController
 from controllers.rca_controller import RCAController
 from services.user_service import login_required, role_required, UserService
@@ -11,7 +12,8 @@ users = Blueprint('users', __name__)
 
 @main.route('/')
 def index():
-    return render_template('index.html')
+    #return render_template('index.html')
+    return Dashboard.dashboard()
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():

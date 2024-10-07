@@ -3,6 +3,70 @@
 {% block title %}Home - RCA Application{% endblock %}
 
 {% block content %}
+    {% if session.user_id %}
+    <div class="row mb-4">
+        <!-- Formulaire de sélection des dates -->
+        <form method="GET" action="/">
+            <div class="row mb-3">
+                <div class="col-md-5">
+                    <label for="start_date">Date de début</label>
+                    <input type="date" id="start_date" name="start_date" class="form-control" value="{{ start_date }}">
+                </div>
+                <div class="col-md-5">
+                    <label for="end_date">Date de fin</label>
+                    <input type="date" id="end_date" name="end_date" class="form-control" value="{{ end_date }}">
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary">Filtrer</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row mb-4">
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">Total des incidents</h6>
+                    <h2 class="card-title mb-0">{{ total_incidents }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">Incidents ouverts</h6>
+                    <h2 class="card-title mb-0">{{ open_incidents }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div id="severityChart"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div id="timelineChart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        var severityGraph = {{ graph_severity | safe }};
+        var timelineGraph = {{ graph_timeline | safe }};
+        
+        Plotly.newPlot('severityChart', severityGraph.data, severityGraph.layout);
+        Plotly.newPlot('timelineChart', timelineGraph.data, timelineGraph.layout);
+    </script>
+    {% else %}
     <h1>Welcome to the RCA Application</h1>
     <p>This application helps manage Root Cause Analysis documents for incidents.</p>
+    {% endif %}
 {% endblock %}
