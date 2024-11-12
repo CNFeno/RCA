@@ -26,6 +26,9 @@
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}">Home</a></li>
                         {% if session.user_id %}
                             <li class="nav-item"><a class="nav-link" href="{{ url_for('rca.rca_list') }}">RCA List</a></li>
+                            {% if session.user_role != 'VIEWER' %}
+                                <li class="nav-item"><a class="nav-link" href="{{ url_for('rca.recommander') }}">Recommendation</a></li>
+                            {% endif %}
                             {% if session.user_role == 'ADMIN' %}
                                 <li class="nav-item"><a class="nav-link" href="{{ url_for('users.user_list') }}">Users</a></li>
                             {% endif %}

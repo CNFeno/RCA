@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Recommandation d'Incidents - RCA Application{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h1 class="text-center">Recommandation de Solution</h1>
+        </div>
+        <div class="card-body">
+            <form id="incident-form" method="post" action="{{ url_for('rca.recommander') }}">
+                {{ form.csrf_token if form }}
+                <div class="form-group mb-3">
+                    <label for="incident" class="form-label">Description de l'incident :</label>
+                    <textarea 
+                        class="form-control" 
+                        id="incident" 
+                        name="incident" 
+                        rows="3" 
+                        required
+                        placeholder="Décrivez l'incident en détail..."
+                    ></textarea>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="platform" class="form-label">Plateforme :</label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="platform" 
+                        name="platform" 
+                        placeholder="Entrez la plateforme concernée" 
+                        required
+                    >
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search me-2"></i>Obtenir une Recommandation
+                    </button>
+                </div>
+            </form>
+
+            <div id="result" class="mt-4"></div>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+<script>
+document.getElementById('incident-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    // Afficher un indicateur de chargement
+    document.getElementById('result').innerHTML = `
+        <div class="alert alert-info">
+            <i class="fas fa-spinner fa-spin me-2"></i>Recherche de recommandations en cours...
+        </div>
+    `;
+    
+    let formData = new FormData(this);
+    
+    fetch("{{ url_for('rca.recommander') }}", {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': "{{ csrf_token() if csrf_token }}"
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erreur réseau');
+        }
+        return response.json();
+    })
+    .then(data => {
+        let resultDiv = document.getElementById('result');
+        if (data.error) {
+            resultDiv.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle me-2"></i>${data.error}
+                </div>`;
+        } else {
+            resultDiv.innerHTML = `
+                <div class="alert alert-success">
+                    <h4 class="alert-heading">
+                        <i class="fas fa-check-circle me-2"></i>Recommandation trouvée
+                    </h4>
+                    <hr>
+                    <p><strong>Solution recommandée :</strong></p>
+                    <p class="mb-3">${data.solution}</p>
+                    <p><strong>Cause probable :</strong></p>
+                    <p class="mb-0">${data.cause}</p>
+                </div>`;
+        }
+    })
+    .catch(error => {
+        document.getElementById('result').innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>Une erreur est survenue lors de la requête.
+            </div>`;
+        console.error('Erreur:', error);
+    });
+});
+</script>
+{% endblock %}
+{% endblock %}

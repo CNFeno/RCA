@@ -9,15 +9,15 @@
         <form method="GET" action="/">
             <div class="row mb-3">
                 <div class="col-md-5">
-                    <label for="start_date">Date de début</label>
+                    <label for="start_date">Start date</label>
                     <input type="date" id="start_date" name="start_date" class="form-control" value="{{ start_date }}">
                 </div>
                 <div class="col-md-5">
-                    <label for="end_date">Date de fin</label>
+                    <label for="end_date">End date</label>
                     <input type="date" id="end_date" name="end_date" class="form-control" value="{{ end_date }}">
                 </div>
                 <div class="col-md-2 d-flex align-items-end">
-                    <button type="submit" class="btn btn-primary">Filtrer</button>
+                    <button type="submit" class="btn btn-primary">Filter</button>
                 </div>
             </div>
         </form>
@@ -26,7 +26,7 @@
         <div class="col-md-6 col-lg-3 mb-3">
             <div class="card h-100">
                 <div class="card-body">
-                    <h6 class="card-subtitle mb-2 text-muted">Total des incidents</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">Number of incidents</h6>
                     <h2 class="card-title mb-0">{{ total_incidents }}</h2>
                 </div>
             </div>
@@ -34,7 +34,7 @@
         <div class="col-md-6 col-lg-3 mb-3">
             <div class="card h-100">
                 <div class="card-body">
-                    <h6 class="card-subtitle mb-2 text-muted">Incidents ouverts</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">Open incidents</h6>
                     <h2 class="card-title mb-0">{{ open_incidents }}</h2>
                 </div>
             </div>

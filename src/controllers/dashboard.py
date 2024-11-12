@@ -79,11 +79,11 @@ class Dashboard:
 
         # Conversion pour Plotly
         df_severity = pd.DataFrame(incidents_by_severity, columns=['Severity', 'Count'])
-        fig_severity = px.pie(df_severity, values='Count', names='Severity', title='Incidents par Sévérité')
+        fig_severity = px.pie(df_severity, values='Count', names='Severity', title='Incidents by Severity')
         graph_severity = Dashboard.serialize_plotly_figure(fig_severity)
 
         df_timeline = pd.DataFrame(incidents_by_month, columns=['Month', 'Count'])
-        fig_timeline = px.line(df_timeline, x='Month', y='Count', title='Évolution des Incidents')
+        fig_timeline = px.line(df_timeline, x='Month', y='Count', title='Incident trends')
         graph_timeline = Dashboard.serialize_plotly_figure(fig_timeline)
 
         # Rendu du template avec les données

@@ -1,5 +1,6 @@
 # src/routes/blueprint.py
 from flask import Blueprint, render_template, request
+from controllers.recommendation_controller import RecommendationController
 from controllers.dashboard import Dashboard
 from controllers.user_manage import UserController
 from controllers.rca_controller import RCAController
@@ -105,3 +106,14 @@ def add_root_cause(rca_id):
 @role_required(['ADMIN', 'ANALYST'])
 def delete_root_cause(root_cause_id):
     return RCAController.delete_root_cause(root_cause_id)
+
+@rca.route('/rca/recommander', methods=['GET', 'POST'])
+@login_required
+@role_required(['ADMIN', 'ANALYST'])
+def recommander():
+    # Afficher la page HTML pour la recommandation
+    if request.method == 'GET':
+        return render_template('recommander.html')
+    # Si POST, appeler la fonction de recommandation
+    return RecommendationController.recommander()
+

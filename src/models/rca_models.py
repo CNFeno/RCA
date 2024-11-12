@@ -21,6 +21,7 @@ class IncidentSeverity(db.Model):
 class RCADocument(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     incident_number = db.Column(db.Integer, nullable=False)
+    #incident_number = db.Column(db.String(10), nullable=False, unique=True)
     customer_name = db.Column(db.String(100))
     product_name = db.Column(db.String(100))
     product_version = db.Column(db.String(50))
