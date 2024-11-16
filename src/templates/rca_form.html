@@ -136,7 +136,10 @@
         </div>
 
         <div class="mb-3">
-            <button type="submit" class="btn btn-primary w-100">{% if rca %}Update{% else %}Create{% endif %} RCA</button>
+            <button type="submit" class="btn btn-primary w-100"
+                {% if view_only %} disabled style="pointer-events: none;" {% endif %}>
+                {% if rca %}Update{% else %}Create{% endif %} RCA
+            </button>
         </div>
     </form>
 
@@ -162,7 +165,7 @@
                             <p>{{ root_cause.description }}</p>
                             <form method="POST" action="{{ url_for('rca.delete_root_cause', root_cause_id=root_cause.id) }}" 
                                   onsubmit="return confirm('Are you sure you want to delete this root cause?');">
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                <button type="submit" class="btn btn-danger btn-sm" {% if view_only %} disabled style="pointer-events: none;" {% endif %}>Delete</button>
                             </form>
                         </div>
                     </div>
@@ -183,7 +186,7 @@
             </div>
         </div>
         <div class="mb-3">
-            <button type="submit" class="btn btn-primary">Add Root Cause</button>
+            <button type="submit" class="btn btn-primary" {% if view_only %} disabled style="pointer-events: none;" {% endif %}>Add Root Cause</button>
         </div>
     </form>
     {% endif %}
